@@ -1,0 +1,157 @@
+<!Doctype html>
+<html lang="en">
+	<head>
+		<title>CN Notes</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<style>
+body {
+	max-width: 800px;
+	margin: 60px auto 0 auto;
+	margin-bottom: 40px;
+	font-family: Helvetica, san-serif;
+}
+
+p {
+	font-size:22px;
+}
+ul {
+	margin: 0px;
+}
+li {
+	font-size:20px;
+}
+		</style>
+	</head>
+	<body>
+		<center><h1><u>Computer Networking</h1></u></center>
+		<h1>Introduction</h1>
+		<h2>Store and Forward Networks</h2>
+		<p>Every computer is connected to at least one computer. If you want to sent data to another computer every other computer in between that target computer need to agree to forward that message. If you want to send a large message every computer need to store this long message and wait for it's turn to forward the message to the destination computer.</p>
+		<h2>Packets and Routers</h2>
+		<p>Messages was divided into parts call packets. Even though the packet concept was invented in 1960s it wasn't used until 1980s because of lack of computation. Networks started including these special purpose computers to route packets which where initially called IMPs ("Interface Message Processors") later these dedicated computers to communication were called "routers".</p>
+		<h2>Addressing and Packets</h2>
+		<p>Before entire message was used send at once by attaching the source and destination address. When a message is divided into packets every packet contains both destination and source address. Every packet also has an "offset" or position which tells it's position in the entire message which is use to reassemble the packets at the destination computer. We need to remember that packets may not arrive in the same order because every packet might have took different route depending upon the traffic to reach the destination.</p>
+		<h2>Network Architecture</h2>
+		<p>It consists of four layers:<p>
+		<ul>
+			<li>Application</li>
+			<li>Transport</li>
+			<li>Network</li>
+			<li>Link</li>
+		</ul>
+		<p>We call this model as "TCP/IP" model in reference to "Transaction Control Protocol" used in the Transport layer and "Internet Protocol" used in the Internetwork layer.</p>
+		<h3>Link Layer</h3>
+		<p>It's responsible for connecting your computer to the Local Area Network (LAN). Link layer could we wired(Ethernet), cellular, wireless(WIFI). When your computer wants to send data, it listens on the LAN and if another computer is sending data it waits until it's turn. If no other computer is sending data your computer sends data. If two computers send data at the same time data collides and receiving computer receives garbage, for this reason computers send data to itself to know the channel is clear, if it doesn't receive it's own data and it'll wait for some random time and tries again this mechanism is called "CSMA/CD" (Carrier Sense Multiple Access with Collision Detection).</p>
+
+		<h3>Internetwork Layer</h3>
+		<p>When your packet reached the router it has the destination address. Now the router has figure out nearest router which can get your packet closer to the destination. Only the routers near the destination computer know the exact location of the destination computer, remaining all routers try to get the packet closer the destination.</p>
+		<h3>Transport Layer</h3>
+		<p>When a packet gets delayed due to heavy traffic in the network or some other reason transport layer takes care of these things. After sending the packet the router waits for acknowledgement from receiver end, depending on the acknowledgement time the sending router adjusts it's speed to send packets. The amount of data source computer sends before the acknowledgement is called as "Window Size".</p>
+		<h3>Application Layer</h3>
+		<p>Each application is generally broken into two halves server and client. Server part runs on the destination computer which waits for incoming network connections and Client part runs on the source computer which sends request to the server.</p>
+		<h1>Link Layer</h1>
+		<p>The key element of the link layer is that the data is only transmitted only part of the wary from source computer to destination computer. Regardless of the distance we can send the data (100000km to 100m), it is still travelling over a single link.</p>
+		<h2>Sharing the Air</h2>
+		<p>Your computer when connected to the wifi sends packets to your first link that is router also called as base station or gateway. That router will forward the packet to the rest of the internet. Every computer on the same network could hear all the communication in the network. Every device has WIFI radio address which identifies itself uniquely which is called as MAC address ("Media Access Control"). When your computer first connects to a new network it sends a broadcast asking "who's is the gateway on this network", which is received by very device on the network, then the gateway answers that broadcast.</p>
+
+		<h2>Courtesy and Coordination</h2>
+		<p>Basically when all the devices on the network share the same wavelength(WIFI), so when to people send the data at the same it get's corrupted. So every computer first listens on the network, if no one is sending data it starts sending and at the same it listens for it's packet, if it didn't receive it's own packet that means some other computer is also trying to send data at the same time. So, it waits for some random time and tries again. This protocol is called "CSMA/CD".</p>
+
+		<h2>Coordination in other Link layers</h2>
+		<p>If you have lot of devices on your network then it becomes very inefficient to use CSMA/CD. Here we use "token". Every system gets it turn to send data when it has the token, then token gets passed to the next computer. You will wait for your turn to send the packet, this means every computer can send data when they have tokens. But if you are the only one sending data you have to wait a fair bit of time to wait for you turn again.</p>
+		<h1>Internetwork Layer</h1>
+		<p>After your packet reached the first router, it takes multiples hops to reach the final destination. This part is taken care by Internetwork layer. Every router quickly determines the outbound link to forward your packet.</p>
+		<h2>Internet Protocol(IP) Address</h2>
+		<p>Has Link layer has MAC address Internetwork layer has IP address. But unlike MAC address IP is not unique for every device. There are two different types of IP addresses IPv4 and IPv6. An IP address is divided into two parts "Network Number" and "Host Identifier". Routers just look at the network number and forward the packet to it's nearest destination. Only the routers close to the destination address look the "Host Identifier" and locate the exact computer.</p>
+		<h2>How Routers Determine the Routes</h2>
+		<p>While collapsing many IP addresses into a single network number greatly reduces the task of the router, each router still needs to learn the path from itself to each of the network numbers it might encounter.</p>
+		When a new router is connected to the network it has some pre-configured paths to route paths, but when ever it encounters new network it asks the neighbouring router for the path and keeps it memory, this storing of paths is called as "routing tables". A router frequently asks the neighbouring router for it's routing table to update it's routing table</p>
+		<h2>Determining Your Route</h2>
+
+		<p>No router knows the exact path your packet is going to take reach it's destination. They only know which link to send your packet so that it gets closer to the destination.</p>
+		<p>Sometimes routes can form loop and forward the packet inside the loop, where each router is thinking it's sending the packet to the nearest destination. To avoid this problem every packet has number called TTL (Time To Live) which by default is set to 30. When a packet passes a single link the TTL is reduced by 1, so when a packet passes more than 30 links TTL value becomes 0 and the router knows something went wrong throws the packet away, by send "sorry message" to the source addresses with it's IP address, although all routers may not do this and just drop the packet.</p>
+		<p>Traceroute tool is used to track the packet which uses TTL to know the route.</p>
+		<h2>Getting an IP address</h2>
+		<p>Routers use DHCP (Dynamic Host Configuration Protocol) to assign IP address to a new device on the network. When you connect to a new network, you send a message to the gateway asking for an IP address. In some cases you don't get an IP address then your device allocates itself an IP address, you can't to anything thing with except play some networking games in your network</p>
+		<h2>Address Reuse</h2>
+		<p>When you connect to a network you always almost get an IP address starting 192.168.#.#. But we discussed that IP address contains two parts Network number and Host identifier, then why is that every time you connect to new network you always get an IP starting 192.168. Here the gateway uses "NAT" (Network Address Translation), your gateway has one routable IP address that is shared across every device on the network with non-routable IP address (192.168). When you send a packet to gateway it replaces the non-routable IP with it's own routable IP.</p>
+		<h2>Global IP Address Allocation</h2>
+		<p>At the top level IP address are given by five Regional Internet Registries (RIRs). Because IPv4 is sufficient for the computers IPv6 was invented.</p>
+		<h1>The Domain Name System</h1>
+		<p>Every time we navigate to a website it would be hard to remember their IP addresses, so we use Domain Names (wikipedia.org) which makes it easier to navigate through websites. Every time we search for a domain it looks up the IP address of that domain in DNS records and serves that website. When you change the IP address of the website you just need to update the address in DNS, next time your computer visits that website it will automatically visit the new IP address.</p>
+		<h2>Allocating Domain Names</h2>
+
+		<p>ICANN ( International Corporation for Assigned Network Names and Numbers ) will be dealing the domain names. Top level domains (TLD) such as .com and .org can be obtained by individuals and we can assign our own subdomains to it.</p>
+		<h1>Transport Layer</h1>
+		<p>Transport layer ensures the arrival of packets. Through Link layer and IP layer we send packets to the destination computer but we don't get any acknowledgment for those packets. Transport layer provides this acknowledgment from the destination computer. Some times the packets may receive in an random order so Transport layer reassembles those packets in a correct order.</p>
+		<h2>Packet Headers</h2>
+		<p>A packet contains Link header, IP header, TCP header and Data. Link header contains the IP address of the previous router in the link layer. IP header contains source and destination address and also TTL (time to live). TCP header contains offset value which specifies where the packet the is located in the entire data.</p>
+		<h2>Packet Reassembly and Retransmission</h2>
+		<p>To avoid overwhelming the network transport layer at the source networks only sends certain number of packets at once and waits for the acknowledgement. The amount of data the sending computer sends before waiting for acknowledgement is called "Window Size". It adjusts the window size based on the ack time.</p>
+		When the sending computer sends enough packets before ack and fills up the window, it waits for ack from the destination computer, at the same time destination computer is waiting for the packets from the source computer. When the destination computer decides that enough time has passed after the last packet received it send a message to the source computer containing the last packet number it received. Then the source computer backs up and resends the data that has lost. This way data transmission works in a reliable way.</p>
+		<h2>Application Clients and Servers</h2>
+		<p>TCP provides a reliable connection b/w networked application so those applications can send and receive streams of data. We call the application that initiates the connection on the local computer "Client" and application that responds the connection "Server".</p>
+		<h2>Server Application and Ports</h2>
+		<p>A computer can have multiple servers running on a single machine. So to avoid misconnections we use ports to specify a server. Ports are extensions of IP address (197.168.0.1:80) here 80 is the port number. List of well known port number:</p>
+		Telnet (23) - Login
+		SSH (22) - Secure Login
+		HTTP (80) - World Wide Web HTTPS (443) - Secure Web
+		SMTP (25) - Incoming Mail
+		IMAP (143/220/993)
+		DNS (53) - Domain Name Resolution FTP (21) - File Transfer
+		<h1>Application Layer</h1>
+		<p>Application layer is where all our web browsers, mail apps, networked apps operate. We as users interact with these application and these application interact with the network on behalf of us.</p>
+		<h2>Client and Server Application</h2>
+		<p>There are two involved in the networked applications Client and Server. The server part of the application runs somewhere on the internet and the Client part runs on our computer. When you lookup 'Wikipedia.org' on your web browser, it looks up the domain address and connect to that address. On the other end Wikipedia server listens for incoming connections and responds to the requests. When you connect to Wikipedia.org the server send the required data back to the browser, which your browser will display to you.</p>
+		<h2>Application Layer Protocols</h2>
+		<p>Protocol is "a rule which describes how an activity should be performed, especially in the field of diplomacy". There are many different networked applications and each networked application has it's own protocol. Some of popular protocols are HTTP, IMAP, SMTP.</p>
+		<h2>HTTP</h2>
+		<p>HyperText Transfer Protocol, describes how webpages should work in general. It's a simple protocol, which rely on TCP to make a connection to client and server, has TCP is more reliable. HTTP in most cases listens on port 80. When you make a connection to a website 'Wikipedia.org' to connects to port 80 on the server side and sends a GET request to the server requesting the web page and server responds with HTML(HyperTest Markup Language) page, which our browser interprets and shows us the webpage.</p>
+		<h2>IMAP</h2>
+		<p>Internet Message Access Protocol (IMAP). This protocol helps us receive mails. In addition to that we can create new mailboxes and delete messages. It uses TCP for reliable connection usually at port 143 and uses port 993 when using TLS explicitly.</p>
+
+		<h2>SMTP</h2>
+		<p>Simple Mail Transfer Protocol (SMTP). This protocol helps us send electronic mails to other users or the same computer using e-mail addresses. It usually uses port 587 or 465 when using TLS.</p>
+		<h2>Flow Control</h2>
+		<p>We looked at Transport layer and understood window size, which is the amount of data computer can send before getting the ack from destination computer, but in there we ignored from where the packets are coming from. Here respected applications send packets. For example when you retrieve an image from a server the server sends the has fast as possible to the transport layer but the transport pauses the application layer after reaching it's window size and resumes when it receives ack from destination computer. The transport doesn't keep any packets that are acknowledged and sent, it only keeps the packets for which the ack is not received. This pausing and resuming of packets from application layer without clogging the internet is call "flow control".</p>
+		<h1>Secure Transport Layer</h1>
+		<p>In the early ages of internet there were far few computers and everyone was trusted, but has the internet grew security became a risk cause everyone who connected to the internet could listen to your packets, which became a serious threat. To deal with this problem we need a solution that works with the existing layer of the network architecture. So, a new layer SSL(Secure Socket Layer) or TLS(Transport Layer Security) was invented.</p>
+		<h2>Encrypting and Decrypting</h2>
+		<p>So to tackle the problem packets were encrypted before reaching the Transport layer at client end and decrypted and destination client end. Basically changing plain text into unreadable form is encryption and other way is decryption</p>
+		<h2>Two Kinds of Secrets</h2>
+		<p>There are two ways of using encryption</p>
+		<ol>
+			<li>Two parties (source and destination) both need to agree on a secret key</li>
+			<li>Public/Private Key cryptography</li>
+		</ol>
+		<h2>Encrypting Web Traffic & Certificate Authorities</h2>
+		<p>When you connect to site securely you see "https://" in the URL and in modern browsers you see a lock symbol. Now a days all sites are using https over http, basically it's not safe to send data to non secure site i.e. http site.</p>
+		<p>How do we establish a secure connection that is encrypted connection to a server, when we connect to a server ex:amazon.com we get a public key through which we'll encrypt the data and send to the sever, and the sever will decrypt the data using it's own private key. But how do we know weather we received the public key from the original amazon site, for this reason Certificate Authorities (CA) provide a certificate for very well known public key that you receive from servers. Your browser already has information about well known CAs.</p>
+		<h1>OSI Model</h1>
+		<p>Till now we have looked at TCP/IP model, but that's not the only model that's out there. Open System Interconnection (OSI) model is also another model. TCP/IP is an implementation model that is it's used to build TCP/IP compatible network hardware and software. Whereas OSI model is more of an abstract model, it helps us understand wide range of network architectures. In OSI model there are 7 layers:</p>
+		<ol>
+			<li>Physical</li>
+			<li>Data Link</li>
+			<li>Network</li>
+			<li>Transport</li>
+			<li>Session</li>
+			<li>Presentation</li>
+			<li>Application</li>
+		</ol>
+		<h2>Physical Layer</h2>
+		<p>This deals with physical attributes of actual wired, wireless, fiber optic or other connection that is used to transport data across a single link. Another problem solved at this layer is how to encode bits. This bit encoding determines how fast data can be sent across the link.</p>
+		<h2>Data Link Layer</h2>
+		<p>It's same same has Link layer in the TCP/IP model. It deals with how system using physical layer cooperate with each other. Data link layers have "checksum" to detect any error in the packets and fix them.</p>
+		<h2>Network Layer</h2>
+		<p>It governs how the routers forward packet to its destination. Does not ensure arrival of packets, all it deals with is how to send packets as fast as possible.</p>
+		<h2>Transport Layer</h2>
+		<p>It deals with packet loss and retransmission of unacknowledged packets as well as flow control and window size. Remaining functionality of Transport layer in TCP/IP is dealt with Session layer in OSI.</p>
+
+		<h2>Session Layer</h2>
+		<p>It establishes connection between applications. It deals with "ports" to ensure we are connecting to correct server. It also deals with some aspects of TLS/SSL.</p>
+		<h2>Presentation Layer</h2>
+		<p>It focuses on how the data is represented and encoded for transmission across the network. For example Presentation layer would describe how to encode the pixels of an image. It also handles data encryption and decryption.</p>
+		<h2>Application Layer</h2>
+		<p>It is very similar to TCP/IP application layer. It contains applications itself, some are client based and some are server based. They have some protocols for interoperability.</p>
+	</body>

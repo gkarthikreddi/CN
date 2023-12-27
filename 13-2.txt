@@ -1,0 +1,63 @@
+AIM:
+Simulate a three-node point-to-point network with a duplex link between them. Set the queue size
+and vary the bandwidth and find the number of packets dropped.
+Sender:- stcp –p 2000 –l 1024 1.0.1.2
+Receiver:- rtcp –p 2000 –l 1024
+Parameters:- Drop Packets and Collision Packets.
+Step1: Drawing topology
+1. Select/click the HOST icon on the toolbar and click the left mouse button on the editor, to place
+a HOST1 on the editor. Repeat the above procedure and place another host “HOST2” on the
+editor.
+2. Select/click the HUB icon on the toolbar and click the left mouse button on the editor, to place
+HUB1 on the editor.
+3. Click on the LINK icon on the toolbar and connect HOST1 to HUB1 and HUB1 to HOST2
+4. Click on the “E” icon on the toolbar to save the current topology
+e.g: file1.tpl (Look for the ******.tpl extension.)
+NOTE: Changes cannot / (should not) be done after selecting the “E” icon
+Step2: Configuration
+1. Double click the left mouse button while cursor is on HOST1 to open the HOST window.
+2. Select Add button on the HOST window to invoke the command window and provide the
+following command in the command textbox.
+stg –u 1024 100 1.0.1.2
+3. Click OK button on the command window to exit and once again click on the OK button on the
+HOST window to exit.
+4. Double click the left mouse button while cursor is on HOST2 to open the HOST window.
+5. Select Add button on the HOST window to invoke the command window and provide the
+following command in the command textbox.
+rtg –u –w log1
+6. Click OK button on the command window to exit.
+7. Click NODE EDITOR Button on the HOST window and select the MAC tab from the modal
+window that pops up.
+8. Select LOG STATISTICS and select checkboxes for Number of Drop Packet and Number of
+Collisions in the MAC window
+9. Click OK button on the MAC window to exit and once again click on the OK button on the
+HOST window to exit.
+Note: To set QUEUE size
+1. Double click the left mouse button while cursor is on HOST2 to open the HOST window.
+2. Click NODE EDITOR Button on the HOST window and select the FIFO tab from the modal
+window that pops up.
+3. Change Queue size (Default 50).
+4. Click OK button on the FIFO window to exit and once again click on the OK button on the
+HOST window to exit.
+Step3: Simulate
+i. Click “R” icon on the tool bar
+ii. Select Simulation in the menu bar and click/ select RUN in the dropdown list to execute the
+simulation.
+iii. venTo start playback select “►” icon located at the bottom right corner of the editor.
+iv. To view results, Open up new TERMINAL window, move to file1.results folder and open
+collision and drop log files in separate TERMINAL window.
+Caution: file1 is the hypothetical name given to this simulation.
+(Refer Step 1.4)
+Changing configurations
+Change 1
+1. Open the above file,
+2. Do not change the topology or any other configuration,
+3. Select E icon on the toolbar
+4. Reduce the bandwidth at link2 by double clicking the left mouse button while cursor is on
+link2 .(Change bandwidth on both tabs Uplink/Downlink)
+5. Repeat Step3 (Simulate)
+Change 2
+1. Open the above file,
+2. Remove HUB and replace it with SWITCH.
+3. Do not change anything in the configuration
+Repeat Step3(Simulate)
