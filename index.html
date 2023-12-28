@@ -30,8 +30,103 @@
                 <td><li><a href="#data">Encryption & Decryption</a></li></td>
                 <td><li><a href="#leaky">Leaky Bucket Algorithm</a></li></td>
             </tr>
+            <tr>
+                <td><li><a href="#frame">Frame Sorting</a></li></td>
+            </tr>
         </table>
         </center>
+        <section class="box" id="frame" style="margin-top: 20px;">
+            <h2>Frame Sorting</h2>
+            <button class="copy" data-clipboard-target="#bit">Copy Code</button>
+            <pre>
+            <code class="block" id="bit">
+<p>
+#include &ltstdio.h&gt
+#include &ltstdlib.h&gt
+#include &ltstring.h&gt
+
+struct frame
+{
+	int sno;
+	char msg[15];
+	int flag;
+};
+
+int main()
+{
+	int i,j,n,r,k;
+	printf("enter no of frames\n");
+	scanf("%d",&n);
+	struct frame fr[n];
+	int s[n];
+	for(i=0;i&ltn;i++)
+	{
+		s[i]=-1;
+		fr[i].sno=-1;
+	}
+	printf("enter the message \n");
+	for(i=0;i&ltn;i++)
+	{
+		scanf("%s",fr[i].msg);
+		fr[i].sno=i;
+	}
+	for(j=0;j&ltn;j++)
+	{
+		r=rand()%n;
+		if(s[r]==-1)
+		{
+			fr[j].flag=r;
+			s[r]=1;
+		}
+		else if(s[r]==1)
+		{
+			for(k=0;k&ltn;k++){
+				r=k;
+				if(s[r]==-1)
+				{
+					fr[j].flag=r;
+					s[r]=1;
+					break;
+				}
+			}
+		}
+	}
+	printf("arrived frame are:\n");
+	printf("\n sno \t msg \n");
+	for(i=0;i&ltn;i++)
+	{
+		for(j=0;j&ltn;j++)
+			if(fr[j].flag==i)
+			{
+				printf("%d\t%s",fr[j].sno,fr[j].msg);
+				printf("\n");
+			}
+	}
+	for(i=0;i&ltn;i++)
+	{
+		for(j=0;j&ltn-1;j++)
+		{
+			if(fr[j].sno&gtfr[j+1].sno)
+			{
+				struct frame temp;
+				temp=fr[j];
+				fr[j]=fr[j+1];
+				fr[j+1]=temp;
+			}
+		}
+	}
+	printf("after sorting arrived frames are\n");
+	printf("\n sno \t msg \n");
+	for(i=0;i&ltn;i++)
+	{
+		printf("%d\t%s",fr[i].sno,fr[i].msg);
+		printf("\n");
+	}
+	return 0;
+}</p>
+            </code>
+            </pre>
+        </section>
         <section class="box" id="bit_stuffing" style="margin-top: 20px;">
             <h2>Bit Stuffing</h2>
             <button class="copy" data-clipboard-target="#bit">Copy Code</button>
